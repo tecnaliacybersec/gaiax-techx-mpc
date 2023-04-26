@@ -1,0 +1,43 @@
+# Copyright Tecnalia Research && Innovation
+# All Rights Reserved.
+
+version: '3.6'
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET}
+
+x-node-mpc: &node-mpc
+    image: ${IMAGE}:${TAG}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+
+services:
+
+  node0.mpc:
+    <<: *node-mpc
+    container_name: node0.mpc
+    volumes:
+      - ./P0-Data:/app/MP-SPDZ/Player-Data
+      - ./Programs:/app/MP-SPDZ/Programs
+
+  node1.mpc:
+    <<: *node-mpc
+    container_name: node1.mpc
+    volumes:
+      - ./P1-Data:/app/MP-SPDZ/Player-Data
+      - ./Programs:/app/MP-SPDZ/Programs
+
+  node2.mpc:
+    <<: *node-mpc
+    container_name: node2.mpc
+    volumes:
+      - ./P2-Data:/app/MP-SPDZ/Player-Data
+      - ./Programs:/app/MP-SPDZ/Programs
